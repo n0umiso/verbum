@@ -110,9 +110,10 @@ def merge_texts(kjv_dir: str, original_dir: str, output_dir: str):
 
 
 def main():
-    kjv_dir = "/Users/jinsei/Projects/data/kjv"
-    original_dir = "/Users/jinsei/Projects/data/original"
-    output_dir = "/Users/jinsei/Projects/data/merged"
+    project_dir = str(Path(__file__).resolve().parent.parent)
+    kjv_dir = os.path.join(project_dir, "data", "kjv")
+    original_dir = os.path.join(project_dir, "data", "original")
+    output_dir = os.path.join(project_dir, "data", "merged")
 
     print("="*60)
     print("Merging Original Texts with KJV")

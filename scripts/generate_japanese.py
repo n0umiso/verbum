@@ -23,8 +23,10 @@ import anthropic
 # ── 設定 ──────────────────────────────────────────
 API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 MODEL = "claude-haiku-4-5-20251001"
-INPUT_DIR = Path("verbum/data/kjv")
-OUTPUT_DIR = Path("verbum/data/japanese")
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = SCRIPT_DIR.parent
+INPUT_DIR = PROJECT_DIR / "data" / "kjv"
+OUTPUT_DIR = PROJECT_DIR / "data" / "japanese"
 BATCH_SIZE = 25       # 1回のAPIコールで処理する節数
 DELAY = 2.0           # APIコール間の待機秒数（レート制限対策）
 # ─────────────────────────────────────────────────

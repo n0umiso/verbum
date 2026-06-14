@@ -688,16 +688,48 @@ async function renderVerses() {
   const isJapanese = currentLang === 'japanese';
   const langClass = isHebrew ? 'hebrew' : isGreek ? 'greek' : isJapanese ? 'japanese' : '';
 
-  document.getElementById('verses').innerHTML = `
-    <div class="verses-container">
-      ${verses.map(v => `
-        <div class="verse" onclick="this.classList.toggle('highlighted')">
-          <div class="verse-num">${v.v}</div>
-          <div class="verse-text ${langClass}">${v.t}</div>
-        </div>
-      `).join('')}
-    </div>
-  `;
+  const container = document.createElement('div');
+  container.className = 'verses-container';
+  for (const v of verses) {
+    const row = document.createElement('div');
+    row.className = 'verse';
+    row.onclick = () => row.classList.toggle('highlighted');
+
+    const num = document.createElement('div');
+    num.className = 'verse-num';
+    num.textContent = v.v;
+
+    const text = document.createElement('div');
+    text.className = `verse-text ${langClass}`;
+    // rubyタグを含む日本語テキストはinnerHTMLが必要だが、
+    // scriptタグ等を除去して安全にする
+    if (isJapanese && v.t.includes('<ruby>')) {
+      text.innerHTML = sanitizeVerseHTML(v.t);
+    } else {
+      text.textContent = v.t;
+    }
+
+    row.appendChild(num);
+    row.appendChild(text);
+    container.appendChild(row);
+  }
+  const versesEl = document.getElementById('verses');
+  versesEl.innerHTML = '';
+  versesEl.appendChild(container);
+}
+
+function sanitizeVerseHTML(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  tmp.querySelectorAll('script,iframe,object,embed,link,style').forEach(el => el.remove());
+  tmp.querySelectorAll('*').forEach(el => {
+    for (const attr of [...el.attributes]) {
+      if (attr.name.startsWith('on') || attr.name === 'href' || attr.name === 'src') {
+        el.removeAttribute(attr.name);
+      }
+    }
+  });
+  return tmp.innerHTML;
 }
 
 // ── 検索 ─────────────────────────────────────────────
@@ -819,14 +851,43 @@ async function runSearch(q) {
     return;
   }
 
-  const highlight = t => t.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'), m => `<mark>${m}</mark>`);
+  const escapedQ = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const highlightRe = new RegExp(`(${escapedQ})`, 'gi');
 
-  results.innerHTML = found.map(r => `
-    <div class="search-result-item" onclick="jumpTo('${r.book.id}',${r.ch},${r.v})">
-      <div class="search-result-ref">${r.book.nameJa} ${r.ch}:${r.v}</div>
-      <div class="search-result-text">${highlight(r.t)}</div>
-    </div>
-  `).join('') + (found.length === 50 ? '<div class="search-status">最初の50件を表示</div>' : '');
+  results.innerHTML = '';
+  for (const r of found) {
+    const item = document.createElement('div');
+    item.className = 'search-result-item';
+    item.onclick = () => jumpTo(r.book.id, r.ch, r.v);
+
+    const ref = document.createElement('div');
+    ref.className = 'search-result-ref';
+    ref.textContent = `${r.book.nameJa} ${r.ch}:${r.v}`;
+
+    const text = document.createElement('div');
+    text.className = 'search-result-text';
+    const parts = r.t.split(highlightRe);
+    for (const part of parts) {
+      if (highlightRe.test(part)) {
+        const mark = document.createElement('mark');
+        mark.textContent = part;
+        text.appendChild(mark);
+      } else {
+        text.appendChild(document.createTextNode(part));
+      }
+      highlightRe.lastIndex = 0;
+    }
+
+    item.appendChild(ref);
+    item.appendChild(text);
+    results.appendChild(item);
+  }
+  if (found.length === 50) {
+    const status = document.createElement('div');
+    status.className = 'search-status';
+    status.textContent = '最初の50件を表示';
+    results.appendChild(status);
+  }
 }
 
 async function jumpTo(bookId, ch, v) {
@@ -855,10 +916,9 @@ async function init() {
     document.getElementById('chapter-title').textContent = 'サーバーが必要です';
     document.getElementById('verses').innerHTML = `
       <div class="status-msg">
-        ローカルで開く場合は以下を実行してください：<br><br>
-        cd /Users/jinsei/Projects<br>
+        ローカルで開く場合は、このファイルのあるディレクトリで：<br><br>
         python3 -m http.server 8080<br><br>
-        その後 http://localhost:8080/HP/bible-mvp.html を開く
+        その後 http://localhost:8080 を開いてください
       </div>`;
     return;
   }

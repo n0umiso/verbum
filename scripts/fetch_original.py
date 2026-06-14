@@ -256,7 +256,7 @@ def save_original_texts(texts: Dict, output_dir: str):
 
 
 def main():
-    output_dir = "/Users/jinsei/Projects/data/original"
+    output_dir = str(Path(__file__).resolve().parent.parent / "data" / "original")
 
     # Load Hebrew and Greek texts
     hebrew_texts = LocalTextLoader.load_hebrew_texts()

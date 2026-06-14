@@ -217,7 +217,7 @@ def main():
     print("Fetching Original Language Biblical Texts")
     print("="*70 + "\n")
 
-    output_dir = "/Users/jinsei/Projects/data/original"
+    output_dir = str(Path(__file__).resolve().parent.parent / "data" / "original")
 
     fetcher = OriginalTextFetcher()
 
