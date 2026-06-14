@@ -1,0 +1,23 @@
+{
+  "id": "1john",
+  "nameEn": "1 John",
+  "nameJa": "ヨハネの手紙第一",
+  "testament": "new",
+  "chapters": {
+    "1": {
+      "original": []
+    },
+    "2": {
+      "original": []
+    },
+    "3": {
+      "original": []
+    },
+    "4": {
+      "original": []
+    },
+    "5": {
+      "original": []
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "2john",
+  "nameEn": "2 John",
+  "nameJa": "ヨハネの手紙第二",
+  "testament": "new",
+  "chapters": {
+    "1": {
+      "original": []
+    }
+  }
+}

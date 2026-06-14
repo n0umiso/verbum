@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verbum — 聖書</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@300;400&family=DM+Sans:ital,wght@0,300;0,400;1,300&family=Noto+Serif+Hebrew&family=Noto+Serif:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #0a0aff;
+  --black: #0a0a0a;
+  --white: #f8f7f4;
+  --gray-100: #f0efec;
+  --gray-200: #e4e3df;
+  --gray-400: #b0afa9;
+  --gray-600: #706f6a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── HEADER ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(248,247,244,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.logo span { color: var(--blue); }
+
+.lang-switcher {
+  display: flex;
+  gap: 2px;
+  background: var(--gray-100);
+  border-radius: 6px;
+  padding: 3px;
+}
+
+.lang-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  border: none;
+  background: transparent;
+  color: var(--gray-400);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.lang-btn.active {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* ── SIDEBAR ── */
+.layout {
+  display: flex;
+  padding-top: 56px;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--gray-200);
+  height: calc(100vh - 56px);
+  position: sticky;
+  top: 56px;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-books {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  padding: 20px 0 8px;
+}
+
+.sidebar-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  padding: 0 20px 8px;
+}
+
+.book-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gray-600);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.book-btn:hover { color: var(--black); background: var(--gray-100); }
+.book-btn.active {
+  color: var(--blue);
+  border-left-color: var(--blue);
+  background: rgba(10,10,255,0.04);
+  font-weight: 400;
+}
+
+/* ── CHAPTER SELECTOR ── */
+.chapter-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 16px;
+  border-top: 1px solid var(--gray-200);
+  background: var(--white);
+  flex-shrink: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.mobile-picker {
+  display: none;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.mobile-select {
+  min-width: 0;
+  height: 40px;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  color: var(--black);
+  border-radius: 4px;
+  padding: 0 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+}
+
+.mobile-select.book { flex: 1; }
+.mobile-select.chapter { width: 86px; }
+
+.ch-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--gray-200);
+  background: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--gray-600);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+
+.ch-btn:hover { border-color: var(--black); color: var(--black); }
+.ch-btn.active { background: var(--blue); color: var(--white); border-color: var(--blue); }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 48px 40px 120px;
+}
+
+.chapter-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 48px;
+}
+
+.chapter-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--gray-400);
+  text-transform: uppercase;
+}
+
+.nav-arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.arrow-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--gray-200);
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--gray-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  border-radius: 2px;
+}
+
+.arrow-btn:hover {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+/* ── VERSES ── */
+.verse {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 0 16px;
+  margin-bottom: 28px;
+  align-items: start;
+  cursor: pointer;
+  padding: 8px 0;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.verse:hover { background: var(--gray-100); padding: 8px; margin: 0 -8px 20px; }
+.verse.highlighted { background: rgba(10,10,255,0.05); padding: 8px; margin: 0 -8px 20px; }
+
+.verse-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--blue);
+  padding-top: 3px;
+  font-weight: 400;
+  text-align: right;
+}
+
+.verse-text {
+  font-size: 17px;
+  line-height: 1.75;
+  font-weight: 300;
+  color: var(--black);
+  letter-spacing: 0.01em;
+}
+
+.verse-text.hebrew {
+  font-family: 'Noto Serif Hebrew', serif;
+  direction: rtl;
+  font-size: 19px;
+  line-height: 2;
+  letter-spacing: 0.05em;
+}
+
+.verse-text.greek {
+  font-family: 'Noto Serif', serif;
+  font-style: italic;
+  font-size: 17px;
+}
+
+.verse-text.japanese {
+  font-family: 'DM Sans', 'Hiragino Mincho ProN', serif;
+  font-size: 16px;
+  line-height: 2.2;
+}
+
+ruby { ruby-align: center; }
+rt {
+  font-size: 0.5em;
+  color: var(--gray-400);
+  letter-spacing: 0.05em;
+  font-family: 'DM Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-weight: 400;
+}
+
+/* ── LOADING / EMPTY ── */
+.status-msg {
+  color: var(--gray-400);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  padding: 48px 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .sidebar { display: none; }
+  .main { padding: 24px 20px 100px; width: 100%; }
+  .mobile-picker { display: flex; }
+  .verse-text { font-size: 15px; }
+}
+
+/* ── FADE IN ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.verses-container { animation: fadeIn 0.3s ease; }
+
+/* ── SEARCH ── */
+.search-btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--gray-200);
+  background: none;
+  border-radius: 2px;
+  cursor: pointer;
+  color: var(--gray-600);
+  font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.search-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+
+.search-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(10,10,10,0.4);
+  backdrop-filter: blur(4px);
+}
+.search-overlay.open { display: flex; align-items: flex-start; justify-content: center; padding-top: 80px; }
+
+.search-box {
+  width: 100%;
+  max-width: 560px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  margin: 0 16px;
+}
+
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--gray-200);
+}
+.search-input-wrap span { color: var(--gray-400); font-size: 16px; margin-right: 10px; }
+.search-input {
+  flex: 1;
+  height: 52px;
+  border: none;
+  background: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: var(--black);
+  outline: none;
+}
+.search-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--gray-400);
+  padding: 0 16px 10px;
+}
+
+.search-results {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.search-result-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-100);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.search-result-item:hover { background: var(--gray-100); }
+.search-result-ref {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--blue);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.search-result-text {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--black);
+  line-height: 1.5;
+}
+.search-result-text mark {
+  background: rgba(10,10,255,0.12);
+  color: var(--blue);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+.search-status {
+  padding: 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--gray-400);
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" onclick="window.scrollTo(0,0)">Verbum<span>.</span></div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="search-btn" onclick="openSearch()" title="検索">⌕</button>
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLang('original')" id="btn-original">原語</button>
+      <button class="lang-btn active" onclick="setLang('kjv')" id="btn-kjv">KJV</button>
+      <button class="lang-btn" onclick="setLang('japanese')" id="btn-japanese">日本語</button>
+    </div>
+  </div>
+</header>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="search-overlay" onclick="closeSearchOnBg(event)">
+  <div class="search-box">
+    <div class="search-input-wrap">
+      <span>⌕</span>
+      <input class="search-input" id="search-input" placeholder="キーワードまたは「ヨハネ 3:16」" oninput="onSearchInput()" onkeydown="onSearchKey(event)">
+    </div>
+    <div class="search-hint">例: John 3:16 / ヨハネ 3:16 / love / 愛</div>
+    <div class="search-results" id="search-results">
+      <div class="search-status">検索語を入力してください</div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-books">
+      <div id="sidebar-old">
+        <div class="sidebar-section">
+          <div class="sidebar-label">旧約</div>
+          <div id="books-old"></div>
+        </div>
+      </div>
+      <div id="sidebar-new">
+        <div class="sidebar-section">
+          <div class="sidebar-label">新約</div>
+          <div id="books-new"></div>
+        </div>
+      </div>
+    </div>
+    <div class="chapter-selector" id="chapter-selector"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="mobile-picker">
+      <select class="mobile-select book" id="mobile-book-select" onchange="setBook(this.value)" aria-label="書を選択"></select>
+      <select class="mobile-select chapter" id="mobile-chapter-select" onchange="setChapter(Number(this.value))" aria-label="章を選択"></select>
+    </div>
+    <div class="chapter-nav">
+      <div class="chapter-title" id="chapter-title">読み込み中...</div>
+      <div class="nav-arrows">
+        <button class="arrow-btn" onclick="prevChapter()">←</button>
+        <button class="arrow-btn" onclick="nextChapter()">→</button>
+      </div>
+    </div>
+    <div id="verses"></div>
+  </div>
+
+</div>
+
+<script>
+// ── 設定 ──────────────────────────────────────────
+// ローカルで開く場合は python3 -m http.server で起動すること
+// デプロイ後はそのまま動く
+const DATA_BASE = 'data';
+// ─────────────────────────────────────────────────
+
+let index = [];          // 全66冊のメタ情報
+let cache = {};          // { bookId: { kjv: {...}, japanese: {...} } }
+let currentBook = null;
+let currentChapter = 1;
+let currentLang = 'kjv';
+let totalChapters = 1;
+
+// ── データ取得 ─────────────────────────────────────
+
+async function fetchIndex() {
+  const r = await fetch(`${DATA_BASE}/kjv/index.json`);
+  return r.json();
+}
+
+async function fetchBook(bookId, type) {
+  if (cache[bookId] && cache[bookId][type]) return cache[bookId][type];
+  try {
+    const r = await fetch(`${DATA_BASE}/${type}/${bookId}.json`);
+    if (!r.ok) throw new Error(r.status);
+    const data = await r.json();
+    if (!cache[bookId]) cache[bookId] = {};
+    cache[bookId][type] = data;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+// ── サイドバー構築 ──────────────────────────────────
+
+function buildSidebar() {
+  const old = document.getElementById('books-old');
+  const nw  = document.getElementById('books-new');
+  old.innerHTML = '';
+  nw.innerHTML  = '';
+
+  for (const book of index) {
+    const btn = document.createElement('button');
+    btn.className = 'book-btn';
+    btn.id = `book-btn-${book.id}`;
+    btn.textContent = book.nameJa;
+    btn.onclick = () => setBook(book.id);
+    (book.testament === 'old' ? old : nw).appendChild(btn);
+  }
+
+  const mobileBook = document.getElementById('mobile-book-select');
+  mobileBook.innerHTML = index.map(book =>
+    `<option value="${book.id}">${book.nameJa}</option>`
+  ).join('');
+}
+
+function renderChapterSelector(chCount) {
+  const container = document.getElementById('chapter-selector');
+  const mobileChapter = document.getElementById('mobile-chapter-select');
+  container.innerHTML = '';
+  mobileChapter.innerHTML = '';
+  for (let i = 1; i <= chCount; i++) {
+    const btn = document.createElement('button');
+    btn.className = `ch-btn${i === currentChapter ? ' active' : ''}`;
+    btn.textContent = i;
+    btn.onclick = () => setChapter(i);
+    container.appendChild(btn);
+
+    const option = document.createElement('option');
+    option.value = i;
+    option.textContent = `${i}章`;
+    option.selected = i === currentChapter;
+    mobileChapter.appendChild(option);
+  }
+}
+
+// ── ナビゲーション ──────────────────────────────────
+
+async function setBook(bookId) {
+  currentBook = bookId;
+  currentChapter = 1;
+
+  document.querySelectorAll('.book-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById(`book-btn-${bookId}`);
+  if (btn) { btn.classList.add('active'); btn.scrollIntoView({ block: 'nearest' }); }
+  const mobileBook = document.getElementById('mobile-book-select');
+  if (mobileBook) mobileBook.value = bookId;
+
+  // KJVを先にfetchして章数を確定
+  const data = await fetchBook(bookId, 'kjv');
+  if (data) {
+    totalChapters = Object.keys(data.chapters).length;
+    renderChapterSelector(totalChapters);
+  }
+
+  renderVerses();
+}
+
+function setChapter(ch) {
+  currentChapter = ch;
+  document.querySelectorAll('.ch-btn').forEach((b, i) => {
+    b.classList.toggle('active', i + 1 === ch);
+  });
+  const mobileChapter = document.getElementById('mobile-chapter-select');
+  if (mobileChapter) mobileChapter.value = String(ch);
+  renderVerses();
+}
+
+function prevChapter() {
+  if (currentChapter > 1) setChapter(currentChapter - 1);
+}
+
+function nextChapter() {
+  if (currentChapter < totalChapters) setChapter(currentChapter + 1);
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  ['original','kjv','japanese'].forEach(l => {
+    document.getElementById('btn-'+l).classList.toggle('active', l === lang);
+  });
+  renderVerses();
+}
+
+// ── 節レンダリング ──────────────────────────────────
+
+async function renderVerses() {
+  const meta = index.find(b => b.id === currentBook);
+  if (!meta) return;
+
+  const chStr = String(currentChapter);
+  document.getElementById('chapter-title').textContent =
+    `${meta.nameJa} — 第${currentChapter}章`;
+
+  document.getElementById('verses').innerHTML =
+    '<div class="status-msg">読み込み中...</div>';
+
+  // 表示する言語のデータを取得
+  let type = currentLang === 'original' ? 'original' : currentLang;
+  // originalデータはmergedにある可能性を考慮してkjvにfallback
+  let bookData = null;
+
+  if (type === 'original') {
+    bookData = await fetchBook(currentBook, 'original');
+    if (!bookData) bookData = await fetchBook(currentBook, 'kjv'); // fallback
+  } else {
+    bookData = await fetchBook(currentBook, type);
+  }
+
+  if (!bookData) {
+    document.getElementById('verses').innerHTML =
+      '<div class="status-msg">データを読み込めませんでした。</div>';
+    return;
+  }
+
+  // 日本語JSONは chapters キーなしで直接 { "1": {...} } の形式
+  const chapterData = type === 'japanese'
+    ? bookData[chStr]
+    : bookData.chapters?.[chStr];
+
+  let verses = null;
+  if (type === 'japanese') {
+    if (!chapterData) {
+      document.getElementById('verses').innerHTML =
+        '<div class="status-msg">この章の日本語訳はまだ準備中です。</div>';
+      return;
+    }
+    // japanese JSONは { "1": { "japanese": [...] } } の形式
+    verses = chapterData.japanese || chapterData.kjv || chapterData;
+    if (!Array.isArray(verses)) {
+      document.getElementById('verses').innerHTML =
+        '<div class="status-msg">この章の日本語訳はまだ準備中です。</div>';
+      return;
+    }
+  } else {
+    if (!chapterData) {
+      document.getElementById('verses').innerHTML =
+        '<div class="status-msg">Coming soon...</div>';
+      return;
+    }
+    verses = chapterData.kjv || chapterData.original || chapterData;
+    if (!Array.isArray(verses)) {
+      document.getElementById('verses').innerHTML =
+        '<div class="status-msg">Coming soon...</div>';
+      return;
+    }
+  }
+
+  const isHebrew = currentLang === 'original' && meta.testament === 'old';
+  const isGreek  = currentLang === 'original' && meta.testament === 'new';
+  const isJapanese = currentLang === 'japanese';
+  const langClass = isHebrew ? 'hebrew' : isGreek ? 'greek' : isJapanese ? 'japanese' : '';
+
+  document.getElementById('verses').innerHTML = `
+    <div class="verses-container">
+      ${verses.map(v => `
+        <div class="verse" onclick="this.classList.toggle('highlighted')">
+          <div class="verse-num">${v.v}</div>
+          <div class="verse-text ${langClass}">${v.t}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// ── 検索 ─────────────────────────────────────────────
+
+// 書名→bookId のマップ（日本語・英語両対応）
+let nameToId = {};
+let searchTimer = null;
+let searchAbort = null;
+
+function buildNameMap() {
+  nameToId = {};
+  for (const b of index) {
+    nameToId[b.nameJa.toLowerCase()] = b.id;
+    nameToId[b.nameEn.toLowerCase()] = b.id;
+    // 短縮形（ヨハネ→john等）
+  }
+}
+
+// 「ヨハネ 3:16」「John 3:16」「John3:16」を解析
+function parseReference(q) {
+  const m = q.match(/^(.+?)\s*(\d+)\s*[:：]\s*(\d+)$/i);
+  if (!m) return null;
+  const bookRaw = m[1].trim().toLowerCase();
+  const ch = parseInt(m[2]);
+  const v = parseInt(m[3]);
+  // 完全一致 or 前方一致
+  let id = nameToId[bookRaw];
+  if (!id) {
+    id = Object.keys(nameToId).find(k => k.startsWith(bookRaw) || bookRaw.startsWith(k));
+    if (id) id = nameToId[id];
+  }
+  return id ? { bookId: id, chapter: ch, verse: v } : null;
+}
+
+function openSearch() {
+  document.getElementById('search-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('search-input').focus(), 50);
+}
+
+function closeSearch() {
+  document.getElementById('search-overlay').classList.remove('open');
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-results').innerHTML = '<div class="search-status">検索語を入力してください</div>';
+}
+
+function closeSearchOnBg(e) {
+  if (e.target === document.getElementById('search-overlay')) closeSearch();
+}
+
+function onSearchKey(e) {
+  if (e.key === 'Escape') closeSearch();
+}
+
+function onSearchInput() {
+  clearTimeout(searchTimer);
+  if (searchAbort) { searchAbort(); searchAbort = null; }
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) {
+    document.getElementById('search-results').innerHTML = '<div class="search-status">検索語を入力してください</div>';
+    return;
+  }
+  searchTimer = setTimeout(() => runSearch(q), 300);
+}
+
+async function runSearch(q) {
+  const ref = parseReference(q);
+  if (ref) {
+    // 章節ジャンプ
+    await setBook(ref.bookId);
+    setChapter(ref.chapter);
+    closeSearch();
+    // 対象節をハイライト
+    setTimeout(() => {
+      const verses = document.querySelectorAll('.verse');
+      for (const v of verses) {
+        const num = parseInt(v.querySelector('.verse-num').textContent);
+        if (num === ref.verse) { v.classList.add('highlighted'); v.scrollIntoView({ behavior: 'smooth', block: 'center' }); break; }
+      }
+    }, 500);
+    return;
+  }
+
+  // キーワード全文検索
+  const results = document.getElementById('search-results');
+  results.innerHTML = '<div class="search-status">検索中...</div>';
+  const keyword = q.toLowerCase();
+  const found = [];
+  let cancelled = false;
+  searchAbort = () => { cancelled = true; };
+
+  for (const book of index) {
+    if (cancelled) return;
+    let bookData = cache[book.id]?.kjv;
+    if (!bookData) {
+      try {
+        const r = await fetch(`${DATA_BASE}/kjv/${book.id}.json`);
+        bookData = await r.json();
+        if (!cache[book.id]) cache[book.id] = {};
+        cache[book.id].kjv = bookData;
+      } catch { continue; }
+    }
+    if (cancelled) return;
+    for (const [chStr, chData] of Object.entries(bookData.chapters || {})) {
+      for (const v of (chData.kjv || [])) {
+        if (v.t.toLowerCase().includes(keyword)) {
+          found.push({ book, ch: parseInt(chStr), v: v.v, t: v.t });
+          if (found.length >= 50) break;
+        }
+      }
+      if (found.length >= 50) break;
+    }
+    if (found.length >= 50) break;
+  }
+
+  if (cancelled) return;
+
+  if (!found.length) {
+    results.innerHTML = '<div class="search-status">見つかりませんでした</div>';
+    return;
+  }
+
+  const highlight = t => t.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'), m => `<mark>${m}</mark>`);
+
+  results.innerHTML = found.map(r => `
+    <div class="search-result-item" onclick="jumpTo('${r.book.id}',${r.ch},${r.v})">
+      <div class="search-result-ref">${r.book.nameJa} ${r.ch}:${r.v}</div>
+      <div class="search-result-text">${highlight(r.t)}</div>
+    </div>
+  `).join('') + (found.length === 50 ? '<div class="search-status">最初の50件を表示</div>' : '');
+}
+
+async function jumpTo(bookId, ch, v) {
+  closeSearch();
+  await setBook(bookId);
+  setChapter(ch);
+  setTimeout(() => {
+    const verses = document.querySelectorAll('.verse');
+    for (const el of verses) {
+      if (parseInt(el.querySelector('.verse-num').textContent) === v) {
+        el.classList.add('highlighted');
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+      }
+    }
+  }, 500);
+}
+
+// ── 初期化 ──────────────────────────────────────────
+
+async function init() {
+  try {
+    index = await fetchIndex();
+  } catch {
+    // fetchできない場合（file://で直接開いた場合）は案内を表示
+    document.getElementById('chapter-title').textContent = 'サーバーが必要です';
+    document.getElementById('verses').innerHTML = `
+      <div class="status-msg">
+        ローカルで開く場合は以下を実行してください：<br><br>
+        cd /Users/jinsei/Projects<br>
+        python3 -m http.server 8080<br><br>
+        その後 http://localhost:8080/HP/bible-mvp.html を開く
+      </div>`;
+    return;
+  }
+
+  buildSidebar();
+  buildNameMap();
+
+  // デフォルト: ヨハネ3章
+  await setBook('john');
+  currentChapter = 3;
+  setChapter(3);
+}
+
+init();
+</script>
+
+</body>
+</html>

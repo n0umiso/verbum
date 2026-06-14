@@ -1,0 +1,398 @@
+[
+  {
+    "id": "genesis",
+    "nameEn": "Genesis",
+    "nameJa": "創世記",
+    "testament": "old"
+  },
+  {
+    "id": "exodus",
+    "nameEn": "Exodus",
+    "nameJa": "出エジプト記",
+    "testament": "old"
+  },
+  {
+    "id": "leviticus",
+    "nameEn": "Leviticus",
+    "nameJa": "レビ記",
+    "testament": "old"
+  },
+  {
+    "id": "numbers",
+    "nameEn": "Numbers",
+    "nameJa": "民数記",
+    "testament": "old"
+  },
+  {
+    "id": "deuteronomy",
+    "nameEn": "Deuteronomy",
+    "nameJa": "申命記",
+    "testament": "old"
+  },
+  {
+    "id": "joshua",
+    "nameEn": "Joshua",
+    "nameJa": "ヨシュア記",
+    "testament": "old"
+  },
+  {
+    "id": "judges",
+    "nameEn": "Judges",
+    "nameJa": "士師記",
+    "testament": "old"
+  },
+  {
+    "id": "ruth",
+    "nameEn": "Ruth",
+    "nameJa": "ルツ記",
+    "testament": "old"
+  },
+  {
+    "id": "1samuel",
+    "nameEn": "1Samuel",
+    "nameJa": "サムエル記上",
+    "testament": "old"
+  },
+  {
+    "id": "2samuel",
+    "nameEn": "2Samuel",
+    "nameJa": "サムエル記下",
+    "testament": "old"
+  },
+  {
+    "id": "1kings",
+    "nameEn": "1Kings",
+    "nameJa": "列王記上",
+    "testament": "old"
+  },
+  {
+    "id": "2kings",
+    "nameEn": "2Kings",
+    "nameJa": "列王記下",
+    "testament": "old"
+  },
+  {
+    "id": "1chronicles",
+    "nameEn": "1Chronicles",
+    "nameJa": "歴代誌上",
+    "testament": "old"
+  },
+  {
+    "id": "2chronicles",
+    "nameEn": "2Chronicles",
+    "nameJa": "歴代誌下",
+    "testament": "old"
+  },
+  {
+    "id": "ezra",
+    "nameEn": "Ezra",
+    "nameJa": "エズラ記",
+    "testament": "old"
+  },
+  {
+    "id": "nehemiah",
+    "nameEn": "Nehemiah",
+    "nameJa": "ネヘミヤ記",
+    "testament": "old"
+  },
+  {
+    "id": "esther",
+    "nameEn": "Esther",
+    "nameJa": "エステル記",
+    "testament": "old"
+  },
+  {
+    "id": "job",
+    "nameEn": "Job",
+    "nameJa": "ヨブ記",
+    "testament": "old"
+  },
+  {
+    "id": "psalms",
+    "nameEn": "Psalms",
+    "nameJa": "詩篇",
+    "testament": "old"
+  },
+  {
+    "id": "proverbs",
+    "nameEn": "Proverbs",
+    "nameJa": "箴言",
+    "testament": "old"
+  },
+  {
+    "id": "ecclesiastes",
+    "nameEn": "Ecclesiastes",
+    "nameJa": "伝道の書",
+    "testament": "old"
+  },
+  {
+    "id": "songofsolomon",
+    "nameEn": "SongofSolomon",
+    "nameJa": "雅歌",
+    "testament": "old"
+  },
+  {
+    "id": "isaiah",
+    "nameEn": "Isaiah",
+    "nameJa": "イザヤ書",
+    "testament": "old"
+  },
+  {
+    "id": "jeremiah",
+    "nameEn": "Jeremiah",
+    "nameJa": "エレミヤ書",
+    "testament": "old"
+  },
+  {
+    "id": "lamentations",
+    "nameEn": "Lamentations",
+    "nameJa": "哀歌",
+    "testament": "old"
+  },
+  {
+    "id": "ezekiel",
+    "nameEn": "Ezekiel",
+    "nameJa": "エゼキエル書",
+    "testament": "old"
+  },
+  {
+    "id": "daniel",
+    "nameEn": "Daniel",
+    "nameJa": "ダニエル書",
+    "testament": "old"
+  },
+  {
+    "id": "hosea",
+    "nameEn": "Hosea",
+    "nameJa": "ホセア書",
+    "testament": "old"
+  },
+  {
+    "id": "joel",
+    "nameEn": "Joel",
+    "nameJa": "ヨエル書",
+    "testament": "old"
+  },
+  {
+    "id": "amos",
+    "nameEn": "Amos",
+    "nameJa": "アモス書",
+    "testament": "old"
+  },
+  {
+    "id": "obadiah",
+    "nameEn": "Obadiah",
+    "nameJa": "オバデヤ書",
+    "testament": "old"
+  },
+  {
+    "id": "jonah",
+    "nameEn": "Jonah",
+    "nameJa": "ヨナ書",
+    "testament": "old"
+  },
+  {
+    "id": "micah",
+    "nameEn": "Micah",
+    "nameJa": "ミカ書",
+    "testament": "old"
+  },
+  {
+    "id": "nahum",
+    "nameEn": "Nahum",
+    "nameJa": "ナホム書",
+    "testament": "old"
+  },
+  {
+    "id": "habakkuk",
+    "nameEn": "Habakkuk",
+    "nameJa": "ハバクク書",
+    "testament": "old"
+  },
+  {
+    "id": "zephaniah",
+    "nameEn": "Zephaniah",
+    "nameJa": "ゼパニヤ書",
+    "testament": "old"
+  },
+  {
+    "id": "haggai",
+    "nameEn": "Haggai",
+    "nameJa": "ハガイ書",
+    "testament": "old"
+  },
+  {
+    "id": "zechariah",
+    "nameEn": "Zechariah",
+    "nameJa": "ゼカリヤ書",
+    "testament": "old"
+  },
+  {
+    "id": "malachi",
+    "nameEn": "Malachi",
+    "nameJa": "マラキ書",
+    "testament": "old"
+  },
+  {
+    "id": "matthew",
+    "nameEn": "Matthew",
+    "nameJa": "マタイ",
+    "testament": "new"
+  },
+  {
+    "id": "mark",
+    "nameEn": "Mark",
+    "nameJa": "マルコ",
+    "testament": "new"
+  },
+  {
+    "id": "luke",
+    "nameEn": "Luke",
+    "nameJa": "ルカ",
+    "testament": "new"
+  },
+  {
+    "id": "john",
+    "nameEn": "John",
+    "nameJa": "ヨハネ",
+    "testament": "new"
+  },
+  {
+    "id": "acts",
+    "nameEn": "Acts",
+    "nameJa": "使徒の働き",
+    "testament": "new"
+  },
+  {
+    "id": "romans",
+    "nameEn": "Romans",
+    "nameJa": "ローマ",
+    "testament": "new"
+  },
+  {
+    "id": "1corinthians",
+    "nameEn": "1Corinthians",
+    "nameJa": "コリント一",
+    "testament": "new"
+  },
+  {
+    "id": "2corinthians",
+    "nameEn": "2Corinthians",
+    "nameJa": "コリント二",
+    "testament": "new"
+  },
+  {
+    "id": "galatians",
+    "nameEn": "Galatians",
+    "nameJa": "ガラテヤ",
+    "testament": "new"
+  },
+  {
+    "id": "ephesians",
+    "nameEn": "Ephesians",
+    "nameJa": "エペソ",
+    "testament": "new"
+  },
+  {
+    "id": "philippians",
+    "nameEn": "Philippians",
+    "nameJa": "ピリピ",
+    "testament": "new"
+  },
+  {
+    "id": "colossians",
+    "nameEn": "Colossians",
+    "nameJa": "コロサイ",
+    "testament": "new"
+  },
+  {
+    "id": "1thessalonians",
+    "nameEn": "1Thessalonians",
+    "nameJa": "テサロニケ一",
+    "testament": "new"
+  },
+  {
+    "id": "2thessalonians",
+    "nameEn": "2Thessalonians",
+    "nameJa": "テサロニケ二",
+    "testament": "new"
+  },
+  {
+    "id": "1timothy",
+    "nameEn": "1Timothy",
+    "nameJa": "テモテ一",
+    "testament": "new"
+  },
+  {
+    "id": "2timothy",
+    "nameEn": "2Timothy",
+    "nameJa": "テモテ二",
+    "testament": "new"
+  },
+  {
+    "id": "titus",
+    "nameEn": "Titus",
+    "nameJa": "テトス",
+    "testament": "new"
+  },
+  {
+    "id": "philemon",
+    "nameEn": "Philemon",
+    "nameJa": "ピレモン",
+    "testament": "new"
+  },
+  {
+    "id": "hebrews",
+    "nameEn": "Hebrews",
+    "nameJa": "ヘブル",
+    "testament": "new"
+  },
+  {
+    "id": "james",
+    "nameEn": "James",
+    "nameJa": "ヤコブ",
+    "testament": "new"
+  },
+  {
+    "id": "1peter",
+    "nameEn": "1Peter",
+    "nameJa": "ペテロ一",
+    "testament": "new"
+  },
+  {
+    "id": "2peter",
+    "nameEn": "2Peter",
+    "nameJa": "ペテロ二",
+    "testament": "new"
+  },
+  {
+    "id": "1john",
+    "nameEn": "1John",
+    "nameJa": "ヨハネ一",
+    "testament": "new"
+  },
+  {
+    "id": "2john",
+    "nameEn": "2John",
+    "nameJa": "ヨハネ二",
+    "testament": "new"
+  },
+  {
+    "id": "3john",
+    "nameEn": "3John",
+    "nameJa": "ヨハネ三",
+    "testament": "new"
+  },
+  {
+    "id": "jude",
+    "nameEn": "Jude",
+    "nameJa": "ユダ",
+    "testament": "new"
+  },
+  {
+    "id": "revelation",
+    "nameEn": "Revelation",
+    "nameJa": "黙示録",
+    "testament": "new"
+  }
+]
